@@ -4,7 +4,7 @@ Async JSX SPA framework with Fine-grained reactivity (Experimental).
 
 ## Planned Features:
 
-- element, useSignal, onMount, onCleanup, Show, For, ref, effect
+- h, signal, onMount, onCleanup, Show, For, ref, effect
 - Lifecycle (onMount/onCleanup)
 - Conditional rendering (Show)
 - Hooks (useSignal, useEffect)
