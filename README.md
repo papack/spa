@@ -12,6 +12,7 @@ Planned Features:
 - Ready to use Layout Components (Box, Center, Flex, Stack etc.)
 - Ready to use Templates (Login, Register, AppShell)
 - Ready to use Hooks (useCustomEvent)
+- useBrakepoint for responsive Layouts
 
 Design:
 
