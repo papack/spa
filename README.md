@@ -1,4 +1,4 @@
-@papack/spa
+@papack/csr
 
 Async JSX SPA framework with Fine-grained Reactivity (Experimental).
 
