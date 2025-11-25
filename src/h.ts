@@ -18,9 +18,6 @@ export async function h(
     return el;
   }
 
-  //maybe someone use array, so we need to flat
-  childs = childs.flat();
-
   //handle childs
   for (const child of childs) {
     const awaitedChild: unknown = await child;
@@ -28,6 +25,11 @@ export async function h(
     //dont handle empty things
     if (awaitedChild === null || awaitedChild === undefined) {
       continue;
+    }
+
+    if (Array.isArray(awaitedChild)) {
+      throw "Array handling not implemented yet!";
+      //normalize?
     }
 
     //string or number
