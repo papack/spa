@@ -1,13 +1,13 @@
 import type { JsxChild } from "./child";
 
 export async function h(
-  tag: string | (() => Promise<Element>),
+  tag: string | ((props: any, childs: any) => Promise<Element>),
   props: any,
   ...childs: Array<JsxChild>
 ): Promise<Element> {
   //call component
   if (typeof tag == "function") {
-    return await tag();
+    return await tag(props, childs);
   }
 
   //create element
@@ -24,6 +24,11 @@ export async function h(
   //handle childs
   for (const child of childs) {
     const awaitedChild: unknown = await child;
+
+    //dont handle empty things
+    if (awaitedChild === null || awaitedChild === undefined) {
+      continue;
+    }
 
     //string or number
     if (typeof awaitedChild === "string" || typeof awaitedChild === "number") {
