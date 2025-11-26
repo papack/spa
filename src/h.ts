@@ -14,10 +14,18 @@ export async function h(
   const el = document.createElement(tag);
 
   //no childs
-  if (!childs) {
+  if (childs.length === 0) {
     return el;
   }
 
+  //this will create all childs. It can be recursive so its in a
+  //extra function
+  await born(childs, el);
+
+  return el;
+}
+
+async function born(childs: Array<JsxChild>, el: Element) {
   //handle childs
   for (const child of childs) {
     const awaitedChild: unknown = await child;
@@ -27,14 +35,17 @@ export async function h(
       continue;
     }
 
+    //child consist out of childs. Born the childs
     if (Array.isArray(awaitedChild)) {
-      throw "Array handling not implemented yet!";
-      //normalize?
+      await born(awaitedChild, el);
+      continue;
     }
 
     //string or number
     if (typeof awaitedChild === "string" || typeof awaitedChild === "number") {
-      el.innerText += awaitedChild;
+      if (el instanceof HTMLElement) {
+        el.innerText += awaitedChild;
+      }
       continue;
     }
 
@@ -44,6 +55,4 @@ export async function h(
       continue;
     }
   }
-
-  return el;
 }
