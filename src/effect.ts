@@ -1,9 +1,17 @@
 import type { ReadFn } from "./signal";
 
+export type EffectFn<T> = {
+  type: "effect";
+  readFn: ReadFn<T>;
+  repeat: () => Promise<unknown>;
+  result: unknown;
+};
+
 export async function effect<T>(
   readFn: ReadFn<T>,
   fn: (value: T) => Promise<unknown>
 ): Promise<{
+  type: "effect";
   readFn: ReadFn<T>;
   repeat: () => Promise<unknown>;
   result: unknown;
@@ -22,5 +30,5 @@ export async function effect<T>(
   }
 
   //return to use in h fn
-  return { readFn, repeat, result };
+  return { type: "effect", readFn, repeat, result } as EffectFn<T>;
 }

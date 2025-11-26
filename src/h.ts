@@ -1,4 +1,5 @@
 import type { ChildType } from "./child";
+import { effect, type EffectFn } from "./effect";
 import type { PropsType } from "./props";
 import type { ReadFn } from "./signal";
 
@@ -47,7 +48,7 @@ async function born(childs: ChildType[], el: Element) {
     //signal
     if (
       typeof awaitedChild === "function" &&
-      (awaitedChild as any).type === "signal"
+      (awaitedChild as any)?.type === "signal"
     ) {
       const signalChild = awaitedChild as ReadFn<unknown>;
       await signalChild(async (v) => {
@@ -58,6 +59,22 @@ async function born(childs: ChildType[], el: Element) {
         throw "svg not implemented with signal yet";
       });
       continue;
+    }
+
+    //effect
+    if (
+      typeof awaitedChild === "object" &&
+      (awaitedChild as any)?.type === "effect"
+    ) {
+      const effectChild = awaitedChild as EffectFn<unknown>;
+      if (el instanceof HTMLElement) {
+        el.innerText = String(effectChild.result);
+        effect(effectChild.readFn, async () => {
+          el.innerText = String(await effectChild.repeat());
+        });
+        return;
+      }
+      throw "svg not implemented with signal yet";
     }
 
     //string or number
