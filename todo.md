@@ -1,2 +1,2 @@
-- h.ts: child is sometime an array sometimes not. Recursive Render logic
-- signale / mount / unmount
+- lifecylcle: show / mount / unmount
+- signale
