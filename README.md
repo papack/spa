@@ -12,7 +12,8 @@ Planned Features:
 - Ready to use Layout Components (Box, Center, Flex, Stack etc.)
 
 - Ready to use Hooks (useCustomEvent)
-- useBrakepoint for responsive Layouts
+- brakepoint for responsive Layouts
+- text for translations
 
 Design:
 
