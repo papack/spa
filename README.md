@@ -4,7 +4,7 @@ Async first JSX CSR SPA framework with Fine-grained Reactivity, 0 Dependencys an
 
 Planned Features:
 
-- h, signal, onMount, onCleanup, Show, For, ref, effect
+- h, signal, effect, mount, unmount, Show, For, ref
 - Lifecycle (mount/unmount)
 - Conditional rendering (Show)
 - Hooks (useSignal, useEffect)
