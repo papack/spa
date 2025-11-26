@@ -6,7 +6,7 @@ async function MyComponent() {
   const [value, setValue] = signal(0);
 
   setInterval(() => {
-    setValue(Math.round(Math.random() * 1000));
+    setValue((prev) => prev + 1);
   }, time.SECOND);
 
   return (

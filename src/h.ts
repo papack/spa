@@ -1,5 +1,6 @@
 import type { ChildType } from "./child";
 import type { PropsType } from "./props";
+import type { ReadFn } from "./signal";
 
 export async function h(
   tag: string | ((props: any, childs: any) => Promise<Element>),
@@ -44,17 +45,28 @@ async function born(childs: ChildType[], el: Element) {
     }
 
     //signal
-    if (typeof awaitedChild === "function") {
-      throw "signal not implemented yet!";
-      //TODO: mount signal
+    if (
+      typeof awaitedChild === "function" &&
+      (awaitedChild as any).type === "signal"
+    ) {
+      const signalChild = awaitedChild as ReadFn<unknown>;
+      await signalChild(async (v) => {
+        if (el instanceof HTMLElement) {
+          el.innerText = String(v);
+          return;
+        }
+        throw "svg not implemented with signal yet";
+      });
+      continue;
     }
 
     //string or number
     if (typeof awaitedChild === "string" || typeof awaitedChild === "number") {
       if (el instanceof HTMLElement) {
         el.innerText += awaitedChild;
+        continue;
       }
-      continue;
+      throw "svg not implemented with number and string";
     }
 
     //Dom element
@@ -62,5 +74,7 @@ async function born(childs: ChildType[], el: Element) {
       el.appendChild(awaitedChild);
       continue;
     }
+
+    throw "signal not implemented yet!";
   }
 }
