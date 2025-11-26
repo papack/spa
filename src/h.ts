@@ -1,5 +1,5 @@
 import type { ChildType } from "./child";
-import { effect, type EffectFn } from "./effect";
+import { type EffectFn } from "./effect";
 import type { PropsType } from "./props";
 import type { ReadFn } from "./signal";
 
@@ -69,8 +69,8 @@ async function born(childs: ChildType[], el: Element) {
       const effectChild = awaitedChild as EffectFn<unknown>;
       if (el instanceof HTMLElement) {
         el.innerText = String(effectChild.result);
-        effect(effectChild.readFn, async () => {
-          el.innerText = String(await effectChild.repeat());
+        effectChild.addHook((result) => {
+          el.innerText = String(result);
         });
         return;
       }
