@@ -43,6 +43,12 @@ async function born(childs: ChildType[], el: Element) {
       continue;
     }
 
+    //signal
+    if (typeof awaitedChild === "function") {
+      throw "signal not implemented yet!";
+      //TODO: mount signal
+    }
+
     //string or number
     if (typeof awaitedChild === "string" || typeof awaitedChild === "number") {
       if (el instanceof HTMLElement) {

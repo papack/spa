@@ -1,2 +1,3 @@
 - signal, effect
 - lifecylcle: show / mount / unmount (need signal)
+- props, style
