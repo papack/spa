@@ -1,9 +1,10 @@
-import type { JsxChild } from "./child";
+import type { ChildType } from "./child";
+import type { PropsType } from "./props";
 
 export async function h(
   tag: string | ((props: any, childs: any) => Promise<Element>),
-  props: any,
-  ...childs: Array<JsxChild>
+  props: PropsType,
+  ...childs: ChildType[]
 ): Promise<Element> {
   //call component
   if (typeof tag == "function") {
@@ -25,7 +26,7 @@ export async function h(
   return el;
 }
 
-async function born(childs: Array<JsxChild>, el: Element) {
+async function born(childs: ChildType[], el: Element) {
   //handle childs
   for (const child of childs) {
     const awaitedChild: unknown = await child;
@@ -37,6 +38,7 @@ async function born(childs: Array<JsxChild>, el: Element) {
 
     //child consist out of childs. Born the childs
     if (Array.isArray(awaitedChild)) {
+      if (awaitedChild.length === 0) continue;
       await born(awaitedChild, el);
       continue;
     }

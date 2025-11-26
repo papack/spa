@@ -1,2 +1,2 @@
-- lifecylcle: show / mount / unmount
 - signal, effect
+- lifecylcle: show / mount / unmount (need signal)
