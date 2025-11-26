@@ -1,6 +1,6 @@
 @papack/csr
 
-Async first JSX CSR SPA framework with Fine-grained Reactivity and 0 Dependencys (Experimental).
+Async first JSX CSR SPA framework with Fine-grained Reactivity, 0 Dependencys and mutable one way databinding (Experimental).
 
 Planned Features:
 
