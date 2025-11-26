@@ -3,5 +3,5 @@
   ----> das muss ersetzt werden durch "register" also das ich mich einfach mit draufhängen kann
   ------> es durfen in h auf keinen fall 2 events laufen!!!!
 
-- lifecylcle: show / mount / unmount (need signal)
+- lifecylcle: show / mount / unmount / For (need signal)
 - props, style
