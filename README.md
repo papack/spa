@@ -23,3 +23,4 @@ Design:
 - mutable one way databinding
 - no bloat, only one idimatic way to do things
 - No Hydration in Mind
+- use inline css for everything! no .css files
