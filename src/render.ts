@@ -12,7 +12,9 @@ export async function render(
 
     //render arrays recusively
     if (Array.isArray(awaitedChild)) {
-      await render(awaitedChild, container);
+      if (awaitedChild.length > 0) {
+        await render(awaitedChild, container);
+      }
       continue;
     }
 
