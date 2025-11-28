@@ -8,90 +8,83 @@ export async function jsx(
   props: PropsType,
   ...childs: ChildType[]
 ): Promise<Element> {
-  //call component
-  if (typeof tag == "function") {
-    return await tag(props, childs);
-  }
+  if (typeof tag === "function") return await tag(props, childs);
 
-  //create element
   const el = document.createElement(tag);
 
-  //no childs
-  if (childs.length === 0) {
-    return el;
-  }
-
-  //this will create all childs. It can be recursive so its in a
-  //extra function
-  await born(childs, el);
-
+  if (childs.length) await born(childs, el);
   return el;
 }
 
 async function born(childs: ChildType[], el: Element) {
-  //handle childs
   for (const child of childs) {
-    const awaitedChild: unknown = await child;
+    const awaited = await child;
 
-    //dont handle empty things
-    if (awaitedChild === null || awaitedChild === undefined) {
+    if (awaited == null) continue;
+    if (Array.isArray(awaited)) {
+      if (awaited.length) await born(awaited, el);
       continue;
     }
 
-    //child consist out of childs. Born the childs
-    if (Array.isArray(awaitedChild)) {
-      if (awaitedChild.length === 0) continue;
-      await born(awaitedChild, el);
+    if (isSignal(awaited)) {
+      await handleSignal(el, awaited);
       continue;
     }
 
-    //signal
-    if (
-      typeof awaitedChild === "function" &&
-      (awaitedChild as any)?.type === "signal"
-    ) {
-      const signalChild = awaitedChild as ReadFn<unknown>;
-      await signalChild(async (v) => {
-        if (el instanceof HTMLElement) {
-          el.innerText = String(v);
-          return;
-        }
-        throw "svg not implemented with signal yet";
-      });
+    if (isEffect(awaited)) {
+      handleEffect(el, awaited);
       continue;
     }
 
-    //effect
-    if (
-      typeof awaitedChild === "object" &&
-      (awaitedChild as any)?.type === "effect"
-    ) {
-      const effectChild = awaitedChild as EffectFn<unknown>;
-      if (el instanceof HTMLElement) {
-        el.innerText = String(effectChild.result);
-        effectChild.addHook((result) => {
-          el.innerText = String(result);
-        });
-        return;
-      }
-      throw "svg not implemented with signal yet";
-    }
-
-    //string or number
-    if (typeof awaitedChild === "string" || typeof awaitedChild === "number") {
-      if (el instanceof HTMLElement) {
-        el.innerText += awaitedChild;
-        continue;
-      }
-      throw "svg not implemented with number and string";
-    }
-
-    //Dom element
-    if (awaitedChild instanceof Element) {
-      el.appendChild(awaitedChild);
+    if (typeof awaited === "string" || typeof awaited === "number") {
+      appendText(el, awaited);
       continue;
     }
 
-    throw "signal not implemented yet!";
+    if (awaited instanceof Element) {
+      el.appendChild(awaited);
+      continue;
+    }
+
+    throw "unknown child type";
+  }
+}
+
+function isSignal(v: any): v is ReadFn<unknown> {
+  return typeof v === "function" && v?.type === "signal";
+}
+
+function isEffect(v: any): v is EffectFn<unknown> {
+  return typeof v === "object" && v?.type === "effect";
+}
+
+async function handleSignal(el: Element, signal: ReadFn<unknown>) {
+  if (!(el instanceof HTMLElement)) throw "svg not implemented with signal yet";
+
+  await signal(async (v) => {
+    changeText(el, String(v));
+  });
+}
+
+function handleEffect(el: Element, effect: EffectFn<unknown>) {
+  if (!(el instanceof HTMLElement)) throw "svg not implemented with signal yet";
+
+  appendText(el, String(effect.result));
+  effect.addHook((next) => changeText(el, String(next)));
+}
+
+function changeText(el: Element, value: string | number) {
+  if (el instanceof HTMLElement) {
+    el.innerText = String(value);
+  } else {
+    throw "svg not implemented with number and string";
+  }
+}
+
+function appendText(el: Element, value: string | number) {
+  if (el instanceof HTMLElement) {
+    el.innerText += String(value);
+  } else {
+    throw "svg not implemented with number and string";
   }
 }
