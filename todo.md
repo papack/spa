@@ -1,3 +1,4 @@
+add browserlogger to see what happen
 rename src to core
 
 - lifecylcle:
