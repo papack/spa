@@ -1,3 +1,3 @@
-import { render, h } from "../../src";
+import { render, jsx } from "../../core";
 
 render(<div>Hello World!</div>, document.getElementById("root")!);

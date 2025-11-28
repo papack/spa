@@ -1,4 +1,4 @@
-import { render, h, fragment } from "../../src";
+import { render, jsx, fragment } from "../../core";
 
 render(<MyComponent />, document.getElementById("root")!);
 

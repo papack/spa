@@ -3,7 +3,7 @@ import { type EffectFn } from "./effect";
 import type { PropsType } from "./props";
 import type { ReadFn } from "./signal";
 
-export async function h(
+export async function jsx(
   tag: string | ((props: any, childs: any) => Promise<Element>),
   props: PropsType,
   ...childs: ChildType[]
