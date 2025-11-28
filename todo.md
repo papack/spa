@@ -1,3 +1,5 @@
+rename src to core
+
 - lifecylcle:
 
   - show
